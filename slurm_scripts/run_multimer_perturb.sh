@@ -6,7 +6,7 @@
 
 # Ensure that --array has the correct number of jobs
 
-config=/home/cpsc471_ljm78/final_project/job_array_config_files/one_long_job_config.txt
+config=/home/cpsc471_ljm78/final_project/job_array_config_files/multimer_config.txt
 
 seq1_id=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $2}' $config)
 seq2_id=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $3}' $config)
