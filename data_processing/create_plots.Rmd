@@ -1,0 +1,471 @@
+---
+title: "cpsc471_plots"
+output: pdf_document
+date: "2024-05-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE) # care
+
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+
+# --- for plotting and stuff --- #
+# devtools::install_github("bmacGTPM/pubtheme")
+library(pubtheme)
+library(hrbrthemes)
+library(viridis)
+
+```
+
+# File for generating plots and visualizations 
+
+## Import processed data (from local; scp-ed from Grace)
+
+```{r import data}
+# import raw data
+source_processed_monomer_output = read.csv("deletion_perturb_out/processed_monomer_output.csv")
+source_processed_multimer_output = read.csv("deletion_perturb_out/processed_multimer_output.csv")
+
+source_processed_AA_monomer_output = read.csv("deletion_perturb_out/processed_AA_monomer_output.csv")
+source_processed_AA_multimer_output = read.csv("deletion_perturb_out/processed_AA_multimer_output.csv")
+```
+
+### Add new variables if needed
+
+```{r visualization preparation function}
+# takes in a processed df and a boolean indicating whether it's monomer or multimer
+viz_prep = function(processed_df, is_multimer) {
+  
+  if (!is_multimer) {
+    df = processed_df %>%
+      # create new possibly useful stats
+      mutate(delta_mean_pLDDT_score_norm = delta_mean_pLDDT_score/100.0,
+             delta_mean_pLDDT_score_relu = ifelse(delta_mean_pLDDT_score > 0, delta_mean_pLDDT_score, 0),
+             delta_pTM_score_relu = ifelse(delta_pTM_score > 0, delta_pTM_score, 0),
+             ) %>%
+      
+      # group stuff
+      group_by(seq) %>%
+      mutate(delta_mean_pLDDT_score_norm_minmax = (delta_mean_pLDDT_score - min(delta_mean_pLDDT_score))/(max(delta_mean_pLDDT_score) - min(delta_mean_pLDDT_score)),
+             delta_pTM_score_norm_minmax = (delta_pTM_score - min(delta_pTM_score))/(max(delta_pTM_score) - min(delta_pTM_score)),
+             ) %>%
+      ungroup()
+  }
+  else {
+    df = processed_df %>%
+      # create new possibly useful stats
+      mutate(delta_mean_pLDDT_score_norm = delta_mean_pLDDT_score/100.0,
+             delta_mean_pLDDT_score_relu = ifelse(delta_mean_pLDDT_score > 0, delta_mean_pLDDT_score, 0),
+             delta_pTM_score_relu = ifelse(delta_pTM_score > 0, delta_pTM_score, 0),
+             delta_ipTM_score_relu = ifelse(delta_ipTM_score > 0, delta_ipTM_score, 0),
+             ) %>%
+      
+      # group stuff
+      group_by(complex_id) %>%
+      mutate(delta_mean_pLDDT_score_norm_minmax = (delta_mean_pLDDT_score - min(delta_mean_pLDDT_score))/(max(delta_mean_pLDDT_score) - min(delta_mean_pLDDT_score)),
+             delta_pTM_score_norm_minmax = (delta_pTM_score - min(delta_pTM_score))/(max(delta_pTM_score) - min(delta_pTM_score)),
+             delta_ipTM_score_norm_minmax = (delta_ipTM_score - min(delta_ipTM_score))/(max(delta_ipTM_score) - min(delta_ipTM_score)),
+             ) %>%
+      ungroup()
+  }
+  
+}
+
+```
+
+```{r test viz_prep}
+processed_monomer_output = viz_prep(source_processed_monomer_output, is_multimer=FALSE)
+processed_multimer_output = viz_prep(source_processed_multimer_output, is_multimer=TRUE)
+
+processed_AA_monomer_output = viz_prep(source_processed_AA_monomer_output, is_multimer=FALSE)
+processed_AA_multimer_output = viz_prep(source_processed_AA_multimer_output, is_multimer=TRUE)
+
+```
+
+
+### Create simplified dataframes 
+
+```{r functions to simplify processed dfs}
+simplify_monomer_df = function(df) {
+  simple_df = df %>%
+  select(seq, delete_index, delta_pTM_score, delta_mean_pLDDT_score) %>%
+  rename(mon_delta_pTM_score = delta_pTM_score, mon_delta_mean_pLDDT_score = delta_mean_pLDDT_score)
+}
+
+simplify_multimer_df = function(df) {
+  # grab homo ones
+  temp_homo_ones = df %>%
+    filter(which_seq == 1,
+           seq1 == seq2) %>%
+    select(-seq2) %>%
+    rename(seq = seq1) %>%
+    select(seq, delete_index, delta_pTM_score, delta_mean_pLDDT_score, delta_ipTM_score)
+  
+  # grab hetero ones
+  temp_hetero_ones = df %>%
+    filter(which_seq == 1,
+           seq1 != seq2) %>%
+    select(-seq2) %>%
+    rename(seq = seq1) %>%
+    select(seq, delete_index, delta_pTM_score, delta_mean_pLDDT_score, delta_ipTM_score)
+  
+  # grab hetero twos
+  temp_hetero_twos = df %>%
+    filter(which_seq == 2,
+           seq1 != seq2) %>%
+    select(-seq1) %>%
+    rename(seq = seq2) %>%
+    select(seq, delete_index, delta_pTM_score, delta_mean_pLDDT_score, delta_ipTM_score)
+  
+  # grab zeros
+  temp_zeros = df %>%
+    filter(which_seq == 0) %>%
+    pivot_longer(cols = c(seq1, seq2), values_to = "seq") %>%
+    distinct(seq, .keep_all = TRUE) %>%
+    select(seq, delete_index, delta_pTM_score, delta_mean_pLDDT_score, delta_ipTM_score)
+  
+  # rbind into one big dataframe
+  simple_df = rbind(temp_homo_ones, temp_hetero_ones, temp_hetero_twos, temp_zeros) %>%
+    rename(multi_delta_pTM_score = delta_pTM_score, 
+           multi_delta_mean_pLDDT_score = delta_mean_pLDDT_score,
+           multi_delta_ipTM_score = delta_ipTM_score)
+  
+  simple_df
+}
+
+
+
+```
+
+```{r simplify processed outputs}
+simple_monomer_output = simplify_monomer_df(processed_monomer_output)
+simple_multimer_output = simplify_multimer_df(processed_multimer_output) 
+
+simple_regular_output = merge(simple_monomer_output, simple_multimer_output) %>%
+  mutate(is_AA = FALSE)
+
+simple_AA_monomer_output = simplify_monomer_df(processed_AA_monomer_output) 
+simple_AA_multimer_output = simplify_multimer_df(processed_AA_multimer_output) 
+
+simple_AA_output = merge(simple_AA_monomer_output, simple_AA_multimer_output) %>%
+  mutate(is_AA = TRUE)
+
+master_simple_data = rbind(simple_regular_output, simple_AA_output)
+master_simple_data_longer = master_simple_data %>%
+  pivot_longer(cols = c(mon_delta_pTM_score, mon_delta_mean_pLDDT_score, 
+                        multi_delta_pTM_score, multi_delta_mean_pLDDT_score, multi_delta_ipTM_score),
+               names_to = "score_type",
+               values_to = "delta_score")
+
+
+```
+
+```{r map sequence to is AA}
+seq_is_AA = master_simple_data %>%
+  select(seq, is_AA) %>%
+  distinct()
+
+```
+
+## Exploratory Data Analysis
+
+### Distributions of scores by metric and is_AA
+
+```{r distributions}
+ggplot(data=master_simple_data, aes(mon_delta_mean_pLDDT_score, fill = is_AA)) +
+  geom_density(alpha = 0.4) + 
+  labs(title = "Monomer delta mean pLDDT score distribution") +
+  theme_pub(type="hist")
+
+ggplot(data=master_simple_data, aes(mon_delta_pTM_score, fill = is_AA)) +
+  geom_density(alpha = 0.4) + 
+  labs(title = "Monomer delta pTM score distribution") +
+  theme_pub(type="hist")
+
+ggplot(data=master_simple_data, aes(multi_delta_mean_pLDDT_score, fill = is_AA)) +
+  geom_density(alpha = 0.4) + 
+  labs(title = "Multimer delta mean pLDDT score distribution") +
+  theme_pub(type="hist")
+
+g_multi_delta_pTM = ggplot(data=master_simple_data, aes(multi_delta_pTM_score, fill = is_AA)) +
+  geom_density(alpha = 0.4) + 
+  labs(title = "Multimer delta pTM score distribution") +
+  theme_pub(type="hist")
+g_multi_delta_pTM
+
+# ggsave(plot = g_multi_delta_pTM, width = 9, height = 6, dpi = 300, filename = "plots/g_multi_delta_pTM.png")
+
+ggplot(data=master_simple_data, aes(multi_delta_ipTM_score, fill = is_AA)) +
+  geom_density(alpha = 0.4) + 
+  labs(title = "Multimer delta ipTM score distribution") +
+  theme_pub(type="hist")
+  
+
+```
+
+## Correlations of scores
+
+### Correlation between different metrics
+
+#### First, plot some delta scores
+
+```{r random delta scatterplot}
+g_corr_scatter_ptm_iptm = ggplot(data=master_simple_data, aes(x=multi_delta_pTM_score, y=multi_delta_ipTM_score)) +
+  geom_point(aes(color=is_AA), size=2, alpha=0.5) +
+  labs(title = "Scatterplot of two delta scores",
+       subtitle = "Multimer pTM and multimer ipTM") +
+  xlab("delta pTM score") +
+  ylab("delta ipTM score") +
+  theme_pub(type="scatter")
+
+g_corr_scatter_ptm_iptm
+
+# - save - #
+# ggsave(plot = g_corr_scatter_ptm_iptm, width = 9, height = 6, dpi = 300, filename = "plots/g_corr_scatter_ptm_iptm.png")
+
+
+```
+
+
+#### Delta score correlations
+
+```{r}
+mon_plddt_ptm_corrs = master_simple_data %>%
+  group_by(seq) %>%
+  summarise(corr = cor(mon_delta_mean_pLDDT_score, mon_delta_pTM_score)) %>%
+  left_join(seq_is_AA, by="seq") %>%
+  mutate(metric_pair = "mon_pLDDT_pTM")
+
+multi_plddt_ptm_corrs = master_simple_data %>%
+  group_by(seq) %>%
+  summarise(corr = cor(multi_delta_mean_pLDDT_score, multi_delta_pTM_score)) %>%
+  left_join(seq_is_AA, by="seq") %>%
+  mutate(metric_pair = "multi_pLDDT_pTM")
+
+multi_ptm_iptm_corrs = master_simple_data %>%
+  group_by(seq) %>%
+  summarise(corr = cor(multi_delta_pTM_score, multi_delta_ipTM_score)) %>%
+  left_join(seq_is_AA, by="seq") %>%
+  mutate(metric_pair = "multi_pTM_ipTM")
+
+multi_plddt_iptm_corrs = master_simple_data %>%
+  group_by(seq) %>%
+  summarise(corr = cor(multi_delta_mean_pLDDT_score, multi_delta_ipTM_score)) %>%
+  left_join(seq_is_AA, by="seq") %>%
+  mutate(metric_pair = "multi_pLDDT_ipTM")
+
+metric_pair_corrs = rbind(mon_plddt_ptm_corrs, multi_plddt_ptm_corrs, 
+                          multi_ptm_iptm_corrs, multi_plddt_iptm_corrs)
+  
+g_delta_corrs = ggplot(metric_pair_corrs, aes(x=is_AA, y=corr, fill=is_AA)) + 
+  geom_violin() +
+  geom_point(aes(x=is_AA, y=corr), position="jitter", size = 0.5) +
+  facet_wrap(~metric_pair, ncol=4) +
+  theme_pub(type="hist") +
+  labs(title = "Histogram of Correlations of Delta Scores",
+       subtitle = "Within monomer or multimer") 
+
+g_delta_corrs
+
+# - save image - #
+# ggsave(plot = g_delta_corrs, width = 9, height = 6, dpi = 300, filename = "plots/within_metric_delta_corrs.png")
+
+
+```
+
+
+
+#### [DEPR - single] Multimer pTM and ipTM
+
+```{r}
+multi_ptm_iptm_corrs = master_simple_data %>%
+  group_by(seq) %>%
+  summarise(corr = cor(multi_delta_pTM_score, multi_delta_ipTM_score)) %>%
+  left_join(seq_is_AA, by="seq")
+  
+ggplot(multi_ptm_iptm_corrs, aes(x=is_AA, y=corr, fill=is_AA)) + 
+  geom_violin() +
+  geom_point(aes(x=is_AA, y=corr), position="jitter", size = 1) +
+  theme_pub(type="hist") +
+  labs(title = "Histogram of Correlations of Delta Statistics",
+       subtitle = "Multimer pTM and ipTM") 
+
+```
+
+
+
+### Correlation between monomer and multimer
+
+May find that antibody-antigen scores are much more correlated (Luke's qualitative observations). 
+
+```{r}
+cross_plddt_corrs = master_simple_data %>%
+  group_by(seq) %>%
+  summarise(corr = cor(mon_delta_mean_pLDDT_score, multi_delta_mean_pLDDT_score)) %>%
+  left_join(seq_is_AA, by="seq") %>%
+  mutate(metric_pair = "pLDDT")
+
+cross_ptm_corrs = master_simple_data %>%
+  group_by(seq) %>%
+  summarise(corr = cor(mon_delta_pTM_score, multi_delta_pTM_score)) %>%
+  left_join(seq_is_AA, by="seq") %>%
+  mutate(metric_pair = "pTM")
+
+cross_ptm_iptm_corrs = master_simple_data %>%
+  group_by(seq) %>%
+  summarise(corr = cor(mon_delta_pTM_score, multi_delta_ipTM_score)) %>%
+  left_join(seq_is_AA, by="seq") %>%
+  mutate(metric_pair = "pTM_ipTM")
+
+cross_metric_corrs = rbind(cross_plddt_corrs, cross_ptm_corrs, cross_ptm_iptm_corrs)
+
+g_cross_delta_corrs = ggplot(cross_metric_corrs, aes(x=is_AA, y=corr, fill=is_AA)) + 
+  geom_violin() +
+  geom_point(aes(x=is_AA, y=corr), position="jitter", size = 0.5) +
+  facet_wrap(~metric_pair, ncol=4) +
+  theme_pub(type="hist") +
+  labs(title = "Histogram of Correlations of Delta Scores",
+       subtitle = "Between monomer and multimer") 
+
+g_cross_delta_corrs
+
+# - save - #
+# ggsave(plot = g_cross_delta_corrs, width = 9, height = 6, dpi = 300, filename = "plots/cross_metric_delta_corrs.png")
+
+
+```
+
+## Heat maps (per sequence)
+
+#### [DEPR] single monomer sequence
+
+```{r per sequence heatmap monomer}
+# pick from here
+unique_monomer_sequences = unique(processed_monomer_output$seq)
+plot_seq = unique_monomer_sequences[1] # can customize
+
+plot_seq_df = processed_monomer_output %>%
+  filter(seq == plot_seq,
+         delete_index >= 0) %>%
+  ungroup() %>%
+  arrange(delete_index) %>%
+  select(delete_index, delta_mean_pLDDT_score_norm, delta_pTM_score) %>%
+  column_to_rownames(var="delete_index")
+
+# plot 1: using absolute normalization (theoretical values in [0,1]; data unchanged)
+heatmap(t(as.matrix(plot_seq_df)), Colv = NA, Rowv = NA, scale="none",
+        main = "Monomer Delta Values (Un-normalized)",
+        xlab = "Residue Index",
+        ylab = "Delta Statistic")
+
+# plot 2: using minmax normalization (actual values normalized to be in [0,1])
+heatmap(plot_seq_data_matrix, Colv = NA, Rowv = NA, scale="column")
+
+```
+
+#### Single (hetero)multimer sequence
+
+```{r}
+# run logic
+unique_multimer_complex_ids = unique(processed_multimer_output$complex_id)
+# plot_complex_id = unique_multimer_complex_ids[16] # custom
+
+non_AA_complex_ids = c("5oxz_A_5oxz_B", "6h7a_A_6h7a_B", "6tri_A_6tri_B", "7f9h_A_7f9h_B",
+                       "7jqd_A_7jqd_B", "7n1j_A_7n1j_B", "7nto_A_7nto_B", "5ytq_A_5ytq_B",
+                       "6otn_A_6otn_B", "6v7u_A_6v7u_B", "6dm9_A_6dm9_B")
+
+AA_complex_ids = c("7phu_A_7phu_B", "7s0x_A_7s0x_B", "7sd5_A_7sd5_B", "7qez_A_7qez_B",
+                   "8be1_A_8be1_B", "7mdp_A_7mdp_B")
+
+# test_ids = c("5oxz_A_5oxz_B")
+
+# plot_complex_id = "5oxz_A_5oxz_B"
+  
+save_heat_map = function(plot_complex_id, is_AA) {
+  if (is_AA) {
+    plot_complex_rows = processed_AA_multimer_output %>%
+      filter(complex_id == plot_complex_id)
+  } else {
+    plot_complex_rows = processed_multimer_output %>%
+      filter(complex_id == plot_complex_id)
+  }
+  
+  # print(dim(plot_complex_rows))
+  
+  plot_seq1 = plot_complex_rows$seq1[1]
+  plot_seq2 = plot_complex_rows$seq2[1]
+  # print(plot_seq1)
+  # print(plot_seq2)
+  plot_seq = paste0(plot_seq1, ":", plot_seq2)
+  
+  # print(dim(plot_complex_rows))
+  
+  n_shift = nchar(plot_seq1)
+  
+  plot_data = master_simple_data_longer %>%
+    filter(seq == plot_seq1 | seq == plot_seq2,
+           delete_index >= 0) %>%
+    mutate(delete_index = ifelse(seq == plot_seq1, delete_index, delete_index + n_shift),
+           delta_score = ifelse(score_type == 'mon_delta_mean_pLDDT_score' | 
+                                  score_type == 'multi_delta_mean_pLDDT_score',
+                                delta_score/100.0,
+                                delta_score),
+           seq = paste0(plot_seq1, plot_seq2),
+           seq_type = ifelse(score_type == 'mon_delta_mean_pLDDT_score' |
+                                  score_type == 'mon_delta_pTM_score',
+                             'Monomer',
+                             'Multimer'),
+           score_type = case_when(
+             score_type == 'mon_delta_mean_pLDDT_score' ~ 'delta_mean_pLDDT_score',
+             score_type == 'mon_delta_pTM_score' ~ 'delta_pTM_score',
+             score_type == 'multi_delta_mean_pLDDT_score' ~ 'delta_mean_pLDDT_score',
+             score_type == 'multi_delta_pTM_score' ~ 'delta_pTM_score',
+             score_type == 'multi_delta_ipTM_score' ~ 'delta_ipTM_score',
+           ),
+           ) %>%
+    arrange(delete_index)
+  
+  # print(dim(plot_data))
+  
+  # --- create desired heatmap --- #
+  g_example_heatmap <-ggplot(plot_data, aes(x=delete_index, y=score_type, fill=delta_score)) +
+    geom_tile(color= "white", size=0.1) +
+    facet_wrap(~seq_type, nrow = 2, scales="free") +
+    scale_fill_viridis(name="Delta Score", option ="A") +
+    labs(title = "Delta scores by index of protein complex",
+         subtitle = paste0("Protein complex id: ", plot_complex_id)) +
+    xlab("Index") +
+    ylab("Score Type") 
+  
+  # - save - #
+  # plot_file_name = paste0("plots/", plot_complex_id, "_delta_scores.png")
+  
+  if (is_AA) {
+    plot_file_name = paste0("plots/AA/", plot_complex_id, "_delta_scores.png")
+  } else {
+    plot_file_name = paste0("plots/non_AA/", plot_complex_id, "_delta_scores.png")
+  }
+  
+  ggsave(plot = g_example_heatmap, width = 9, height = 6, dpi = 300, filename = plot_file_name)
+  
+  0
+}
+
+
+# run and save
+# for (complex_id in non_AA_complex_ids) {
+#   save_heat_map(complex_id, FALSE)
+# }
+
+for (complex_id in AA_complex_ids) {
+  save_heat_map(complex_id, TRUE)
+}
+
+
+```
+
+
+
+
