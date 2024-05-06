@@ -2,7 +2,7 @@
 
 #SBATCH --time=12:00:00
 #SBATCH --mem-per-cpu=8G
-#SBATCH --array=1-1
+#SBATCH --array=1-4673
 
 # Ensure that --array has the correct number of jobs
 
