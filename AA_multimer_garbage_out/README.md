@@ -1,0 +1,1 @@
+Directory to store all of the output from running AlphaFold-Multimer in Grace on the set of antigen-antibody pairs that we study. Most of this output we do not use, with the exception of the csv file containing sequence ID and the full protein sequence, as well as the rank 1 predicted PDB file.
