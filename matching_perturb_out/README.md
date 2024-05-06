@@ -1,0 +1,1 @@
+Also contains the "matching" output csv files that have been returned from any of the Jupyter Notebook files in Explainable-AlphaFold-Multimer/data_processing ending with `retry_failed_jobs.ipynb`. These csv files match the expected configuration file in Explainable-AlphaFold-Multimer/config_files, meaning they contain output for all input protein sequences.
