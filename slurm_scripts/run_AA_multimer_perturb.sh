@@ -2,12 +2,11 @@
 
 #SBATCH --time=3:00:00
 #SBATCH --mem-per-cpu=8G
-#SBATCH --array=1-1
+#SBATCH --array=1-3466
 
 # Ensure that --array has the correct number of jobs
 
-config=/home/cpsc471_ljm78/final_project/job_array_config_files/test_AA_multimer_config.txt # test 1 job
-# config=/home/cpsc471_ljm78/final_project/job_array_config_files/AA_multimer_config.txt # real, 3466 jobs
+config=/home/cpsc471_ljm78/final_project/job_array_config_files/AA_multimer_config.txt # real, 3466 jobs
 
 seq1_id=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $2}' $config)
 seq2_id=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $3}' $config)
