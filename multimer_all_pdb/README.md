@@ -4,4 +4,4 @@ These PDB files, among many other files which we do not use, are generated when 
 
 cd Explainable-AlphaFold-Multimer/multimer_garbage_out
 
-cp **/*unrelaxed_rank_001*.pdb ../multimer_all_pdb/
+cp **/\*unrelaxed_rank_001\*.pdb ../multimer_all_pdb/
