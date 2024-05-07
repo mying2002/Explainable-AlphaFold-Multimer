@@ -41,7 +41,21 @@ Copy the outputs from running AlphaFold and AlphaFold-Multimer on the cluster to
 ## Copying predicted PDB structures to local directory
 We also need to copy the predicted PDB files generated on Grace in your `/grace/path/to/garbage_out` to local. The best way to do this is to first copy the PDB files we will need to a subdirectory of garbage_out on Grace, and then copy only these PDB files to your local computer. This can be done as follows:
 
-`cd /grace/path/to/garbage_out/
+For monomer PDB files:
+`cd /grace/path/to/garbage_out/monomer_garbage_out`
+`cp **\*unrelaxed_rank_001*.pdb` ../monomer_all_pdb`
+
+For multimer PDB files:
+`cd /grace/path/to/garbage_out/multimer_garbage_out`
+`cp **\*unrelaxed_rank_001*.pdb` ../multimer_all_pdb`
+
+For antibody/antigen monomer PDB files:
+`cd /grace/path/to/garbage_out/AA_monomer_garbage_out`
+`cp **\*unrelaxed_rank_001*.pdb` ../AA_monomer_all_pdb`
+
+For antibody/antigen multimer PDB files:
+`cd /grace/path/to/garbage_out/AA_multimer_garbage_out`
+`cp **\*unrelaxed_rank_001*.pdb` ../AA_multimer_all_pdb`
 
 
 Mirdita, M., Schütze, K., Moriwaki, Y. et al. ColabFold: making protein folding accessible to all. Nat Methods 19, 679–682 (2022). https://doi.org/10.1038/s41592-022-01488-1
