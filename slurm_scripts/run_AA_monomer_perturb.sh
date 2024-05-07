@@ -7,6 +7,8 @@
 # Ensure that --array has the correct number of jobs
 
 config = ../config_files/AA_monomer_config.txt # real, 3481 jobs
+## IF RETRYING FAILED RUNS, COMMENT THE LINE IMMEDIATELY ABOVE, AND UNCOMMENT THIS LINE
+# config = ../config_files/fill_AA_monomer_config.txt
 
 seq_id=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $2}' $config)
 seq=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $3}' $config)
