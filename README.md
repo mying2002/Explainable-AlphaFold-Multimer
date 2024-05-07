@@ -2,7 +2,13 @@
 Repository supplementing the CPSC 471 final project on the explainability of AlphaFold-Multimer
 
 ## Detailed instructions on running code
-Note: much of this project was designed to run on Grace. We recommend copying the entire directory tree to Grace
+
+# Set up directories on Grace as follows:
+Note: much of this project was designed to run on Grace. We recommend copying the following directories and their subdirectories from Github to Grace prior to running any code:
+- Explainable-AlphaFold-Multimer/deletion_perturb_out
+- Explainable-AlphaFold-Multimer/garbage_out
+- 
+
 
 
 
