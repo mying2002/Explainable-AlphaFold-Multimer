@@ -7,6 +7,8 @@
 # Ensure that --array has the correct number of jobs
 
 config = ../config_files/monomer_config.txt
+## IF RETRYING FAILED RUNS, COMMENT THE LINE IMMEDIATELY ABOVE, AND UNCOMMENT THIS LINE
+# config = ../config_files/fill_monomer_config.txt
 
 seq=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $2}' $config)
 delete_index=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $3}' $config)
