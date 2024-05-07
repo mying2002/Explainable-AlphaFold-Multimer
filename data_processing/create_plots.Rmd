@@ -25,11 +25,11 @@ library(viridis)
 
 ```{r import data}
 # import raw data
-source_processed_monomer_output = read.csv("deletion_perturb_out/processed_monomer_output.csv")
-source_processed_multimer_output = read.csv("deletion_perturb_out/processed_multimer_output.csv")
+source_processed_monomer_output = read.csv("../processed_deletion_perturb_out/processed_monomer_output.csv")
+source_processed_multimer_output = read.csv("../processed_deletion_perturb_out/processed_multimer_output.csv")
 
-source_processed_AA_monomer_output = read.csv("deletion_perturb_out/processed_AA_monomer_output.csv")
-source_processed_AA_multimer_output = read.csv("deletion_perturb_out/processed_AA_multimer_output.csv")
+source_processed_AA_monomer_output = read.csv("../processed_deletion_perturb_out/processed_AA_monomer_output.csv")
+source_processed_AA_multimer_output = read.csv("../processed_deletion_perturb_out/processed_AA_multimer_output.csv")
 ```
 
 ### Add new variables if needed
@@ -270,7 +270,7 @@ g_delta_corrs = ggplot(metric_pair_corrs, aes(x=is_AA, y=corr, fill=is_AA)) +
 g_delta_corrs
 
 # - save image - #
-# ggsave(plot = g_delta_corrs, width = 9, height = 6, dpi = 300, filename = "plots/within_metric_delta_corrs.png")
+# ggsave(plot = g_delta_corrs, width = 9, height = 6, dpi = 300, filename = "../analysis_plots/within_metric_delta_corrs.png")
 
 
 ```
@@ -332,7 +332,7 @@ g_cross_delta_corrs = ggplot(cross_metric_corrs, aes(x=is_AA, y=corr, fill=is_AA
 g_cross_delta_corrs
 
 # - save - #
-# ggsave(plot = g_cross_delta_corrs, width = 9, height = 6, dpi = 300, filename = "plots/cross_metric_delta_corrs.png")
+# ggsave(plot = g_cross_delta_corrs, width = 9, height = 6, dpi = 300, filename = "../analysis_plots/cross_metric_delta_corrs.png")
 
 
 ```
@@ -440,12 +440,12 @@ save_heat_map = function(plot_complex_id, is_AA) {
     ylab("Score Type") 
   
   # - save - #
-  # plot_file_name = paste0("plots/", plot_complex_id, "_delta_scores.png")
+  # plot_file_name = paste0("../analysis_plots/", plot_complex_id, "_delta_scores.png")
   
   if (is_AA) {
-    plot_file_name = paste0("plots/AA/", plot_complex_id, "_delta_scores.png")
+    plot_file_name = paste0("../analysis_plots/AA/", plot_complex_id, "_delta_scores.png")
   } else {
-    plot_file_name = paste0("plots/non_AA/", plot_complex_id, "_delta_scores.png")
+    plot_file_name = paste0("../analysis_plots/non_AA/", plot_complex_id, "_delta_scores.png")
   }
   
   ggsave(plot = g_example_heatmap, width = 9, height = 6, dpi = 300, filename = plot_file_name)
