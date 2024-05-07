@@ -195,7 +195,7 @@ g_multi_delta_pTM = ggplot(data=master_simple_data, aes(multi_delta_pTM_score, f
   theme_pub(type="hist")
 g_multi_delta_pTM
 
-# ggsave(plot = g_multi_delta_pTM, width = 9, height = 6, dpi = 300, filename = "plots/g_multi_delta_pTM.png")
+# ggsave(plot = g_multi_delta_pTM, width = 9, height = 6, dpi = 300, filename = "../analysis_plots/g_multi_delta_pTM.png")
 
 ggplot(data=master_simple_data, aes(multi_delta_ipTM_score, fill = is_AA)) +
   geom_density(alpha = 0.4) + 
@@ -223,7 +223,7 @@ g_corr_scatter_ptm_iptm = ggplot(data=master_simple_data, aes(x=multi_delta_pTM_
 g_corr_scatter_ptm_iptm
 
 # - save - #
-# ggsave(plot = g_corr_scatter_ptm_iptm, width = 9, height = 6, dpi = 300, filename = "plots/g_corr_scatter_ptm_iptm.png")
+# ggsave(plot = g_corr_scatter_ptm_iptm, width = 9, height = 6, dpi = 300, filename = "../analysis_plots/g_corr_scatter_ptm_iptm.png")
 
 
 ```
