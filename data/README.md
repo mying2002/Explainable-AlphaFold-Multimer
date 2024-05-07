@@ -4,6 +4,6 @@
 Yin Rui and Brian G. Pierce, "Evaluation of AlphaFold Antibody-Antigen Modeling with Implications for Improving Predictive Accuracy"
 https://doi.org/10.1101/2023.07.05.547832
 
-The sequences used in the generic multimer and monomer case were obtained from:
+The sequences (in dimer_seqres.zip) used in the generic multimer and monomer case were obtained from:
 Wensi Zhu, Aditi Shenoy, Petras Kundrotas, Arne Elofsson, "Evaluation of AlphaFold-Multimer prediction on multi-chain protein complexes"
 https://doi.org/10.1093/bioinformatics/btad424
