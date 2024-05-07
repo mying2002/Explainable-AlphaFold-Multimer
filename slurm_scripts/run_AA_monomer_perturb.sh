@@ -13,6 +13,6 @@ seq=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $3}' $conf
 delete_index=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $4}' $config)
 
 # Move to the directory where we want the output to go
-cd ../AA_monomer_garbage_out
+cd ../garbage_out/AA_monomer_garbage_out
 
 srun python3 ../python_scripts/alphafold_AA_monomer.py ${seq_id} ${seq} ${delete_index}
