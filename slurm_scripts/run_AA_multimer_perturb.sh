@@ -16,6 +16,6 @@ which_seq=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $6}'
 delete_index=$(awk -v ArrayTaskID=$SLURM_ARRAY_TASK_ID '$1==ArrayTaskID {print $7}' $config)
 
 # Move to the directory where we want the output to go
-cd ../AA_multimer_garbage_out
+cd ../garbage_out/AA_multimer_garbage_out
 
 srun python3 ../python_scripts/alphafold_AA_multimer.py ${seq1_id} ${seq2_id} ${seq1} ${seq2} ${which_seq} ${delete_index}
