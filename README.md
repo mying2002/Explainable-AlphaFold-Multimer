@@ -92,7 +92,14 @@ then in another terminal:
 
 - `scp -r /grace/path/to/garbage_out/monomer_garbage_out/AA_monomer_all_csv /path/to/local/Explainable-AlphaFold-Multimer/garbage_out/AA_monomer_garbage_out`
 
+## Checking for failed runs and rerunning if necessary
+Note: you can now exit Grace. The rest of the instructions are meant to be followed locally (unless a rerun of AlphaFold is necessary; see this section)
 
+The next step is to check if any AlphaFold or AlphaFold-Multimer runs failed. Run the notebooks `monomer_retry_failed_jobs.ipynb` and `multimer_retry_failed_jobs.ipynb` (in /path/to/local/Explainable-AlphaFold-Multimer/data_processing) to check if any of the runs for generic monomers and multimers, respectively, have failed. If the "missing_df" is empty, all runs were successful; save the "matching_df" to a csv file by uncommenting the corresponding line in each notebook and running the code block.
+
+To check if any antibody-antigen runs failed, run the notebook `AA_retry_failed_jobs.ipynb` in /path/to/local/Explainable-AlphaFold-Multimer/data_processing. Make sure to save the "matching_df" to csv when there are no missing runs.
+
+If any of the runs failed (the "missing_df" is non-empty), you must rerun AlphaFold and AlphaFold multimer on Grace using a new configuration file. If this is the case, then in the "Save missing data asa 'to fill in' config file" section in the `retry_failed_jobs` notebook, uncomment the line that saves "fill_df" to csv and run the code block. There will be a new configuration file in /path/to/local/Explainable-AlphaFold-Multimer/config_files; copy this file to Grace in /grace/path/to/config_files. Then, in the corresponding slurm script on Grace (in /grace/path/to/slurm_scripts), uncomment the 
 
 
 Mirdita, M., Schütze, K., Moriwaki, Y. et al. ColabFold: making protein folding accessible to all. Nat Methods 19, 679–682 (2022). https://doi.org/10.1038/s41592-022-01488-1
