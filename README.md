@@ -145,9 +145,10 @@ To produce a png image of whatever is displayed on the screen, with a transparen
 Note that <plots_directory>, for organizational purposes, should refer to the type of visualization you were trying to represent with the png. For example, if you were comparing pLDDT for multimers vs. mononomers, you might choose to put the png image in /path/to/local/pymol/plots_pLDDT_vs_pLDDT.
 
 ## Generating analysis plots
+Run the script `create_plots.Rmd` in RStudio to generate plots that compare the different metrics measuring the importance of individual amino acids in mononumeric proteins vs. multimeric protein complexes.
+
 
 ## References
-
 Mirdita, M., Schütze, K., Moriwaki, Y. et al. ColabFold: making protein folding accessible to all. Nat Methods 19, 679–682 (2022). https://doi.org/10.1038/s41592-022-01488-1
 
 PyMOL. The PyMOL Molecular Graphics System, Version 3.0 Schrödinger, LLC.
