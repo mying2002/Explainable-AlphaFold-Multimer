@@ -4,10 +4,14 @@ Repository supplementing the CPSC 471 final project on the explainability of Alp
 ## Detailed instructions on running code
 
 # Set up directories on Grace as follows:
-Note: much of this project was designed to run on Grace. We recommend copying the following directories and their subdirectories from Github to Grace prior to running any code:
+Note: much of this project was designed to run on Grace. The following directories and their subdirectories must be copied from Github to Grace prior to running any code:
 - Explainable-AlphaFold-Multimer/deletion_perturb_out
 - Explainable-AlphaFold-Multimer/garbage_out
-- 
+- Explainable-AlphaFold-Multimer/python_scripts
+- Explainable-AlphaFold-Multimer/config_files
+- Explainable-AlphaFold-Multimer/slurm_scripts
+
+
 
 
 
