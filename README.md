@@ -11,8 +11,8 @@ Note: much of this project was designed to run on Grace. The following directori
 - Explainable-AlphaFold-Multimer/config_files
 - Explainable-AlphaFold-Multimer/slurm_scripts
 
-
-
+# Configuration Files
+Text files in Explainable-AlphaFold-Multimer/config_files have been constructed using 
 
 
 
