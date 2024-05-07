@@ -43,19 +43,29 @@ We also need to copy the predicted PDB files generated on Grace in your `/grace/
 
 For monomer PDB files:
 - `cd /grace/path/to/garbage_out/monomer_garbage_out`
-- `cp **\*unrelaxed_rank_001*.pdb` ../monomer_all_pdb`
+- `cp **/*unrelaxed_rank_001*.pdb ../monomer_all_pdb`
 
 For multimer PDB files:
 - `cd /grace/path/to/garbage_out/multimer_garbage_out`
-- `cp **\*unrelaxed_rank_001*.pdb` ../multimer_all_pdb`
+- `cp **/*unrelaxed_rank_001*.pdb ../multimer_all_pdb`
 
 For antibody/antigen monomer PDB files:
 - `cd /grace/path/to/garbage_out/AA_monomer_garbage_out`
-- `cp **\*unrelaxed_rank_001*.pdb` ../AA_monomer_all_pdb`
+- `cp **/*unrelaxed_rank_001*.pdb ../AA_monomer_all_pdb`
 
-For antibody/antigen multimer PDB files:
+For antibody-antigen multimer PDB files:
 - `cd /grace/path/to/garbage_out/AA_multimer_garbage_out`
-- `cp **\*unrelaxed_rank_001*.pdb` ../AA_multimer_all_pdb`
+- `cp **/*unrelaxed_rank_001*.pdb ../AA_multimer_all_pdb`
 
+## Copying ID csvs for monomers
+We also use the AlphaFold job ID for monomers later in data processing, so we need these files as well. Execute the following commands:
+
+For generic monomer csv files:
+- `cd /grace/path/to/garbage_out/monomer_garbage_out`
+- `cp **/*.csv ../monomer_all_csv`
+
+For antibody/antigen monomer csv files:
+- `cd /grace/path/to/garbage_out/AA_monomer_garbage_out`
+- `cp **/*.csv ../AA_monomer_all_csv`
 
 Mirdita, M., Schütze, K., Moriwaki, Y. et al. ColabFold: making protein folding accessible to all. Nat Methods 19, 679–682 (2022). https://doi.org/10.1038/s41592-022-01488-1
