@@ -140,8 +140,18 @@ Multimers and monomers are named according to their complex IDs and the delta sc
 
 To produce a png image of whatever is displayed on the screen, with a transparent background, execute the following command:
 
-- png /path/to/local/pymol/AA_plots_pLDDT_vs_pLDDT/<name_of_png>.png, 0, 0, -1, ray=1
+- png /path/to/local/pymol/<plots_directory>/<name_of_png>.png, 0, 0, -1, ray=1
+
+Note that <plots_directory>, for organizational purposes, should refer to the type of visualization you were trying to represent with the png. For example, if you were comparing pLDDT for multimers vs. mononomers, you might choose to put the png image in /path/to/local/pymol/plots_pLDDT_vs_pLDDT.
+
+## Generating analysis plots
+
+## References
 
 Mirdita, M., Schütze, K., Moriwaki, Y. et al. ColabFold: making protein folding accessible to all. Nat Methods 19, 679–682 (2022). https://doi.org/10.1038/s41592-022-01488-1
 
-PyMOL
+PyMOL. The PyMOL Molecular Graphics System, Version 3.0 Schrödinger, LLC.
+
+Wensi Zhu, Aditi Shenoy, Petras Kundrotas, Arne Elofsson, Evaluation of AlphaFold-Multimer prediction on multi-chain protein complexes, Bioinformatics, Volume 39, Issue 7, July 2023, btad424, https://doi.org/10.1093/bioinformatics/btad424
+
+Yin Rui and Brian G. Pierce, "Evaluation of AlphaFold Antibody-Antigen Modeling with Implications for Improving Predictive Accuracy" https://doi.org/10.1101/2023.07.05.547832
