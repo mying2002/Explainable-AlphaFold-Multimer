@@ -57,7 +57,7 @@ For antibody-antigen multimer PDB files:
 - `cd /grace/path/to/garbage_out/AA_multimer_garbage_out`
 - `cp **/*unrelaxed_rank_001*.pdb ../AA_multimer_all_pdb`
 
-## Copying ID csvs for monomers
+## Copying ID csv files for monomers
 We also use the AlphaFold job ID for monomers later in data processing, so we need these files as well. Execute the following commands:
 
 For generic monomer csv files:
