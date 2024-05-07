@@ -29,9 +29,13 @@ Since each of these scripts may submit several thousand processes on the cluster
 
 ## Copying outputs to local directory
 Copy the outputs from running AlphaFold and AlphaFold-Multimer on the cluster to your local computer with:
+
 `scp /grace/path/to/deletion_perturb_out/monomer_output.csv /path/to/local/Explainable-AlphaFold-Multimer/deletion_perturb_out/monomer_output.csv`
+
 `scp /grace/path/to/deletion_perturb_out/multimer_output.csv /path/to/local/Explainable-AlphaFold-Multimer/deletion_perturb_out/multimer_output.csv`
+
 `scp /path/to/deletion_perturb_out/AA_monomer_output.csv /path/to/local/Explainable-AlphaFold-Multimer/deletion_perturb_out/AA_monomer_output.csv`
+
 `scp /path/to/deletion_perturb_out/AA_multimer_output.csv /path/to/local/Explainable-AlphaFold-Multimer/deletion_perturb_out/AA_multimer_output.csv`
 
 
