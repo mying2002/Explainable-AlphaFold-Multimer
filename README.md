@@ -44,18 +44,26 @@ We also need to copy the predicted PDB files generated on Grace in your `/grace/
 For monomer PDB files:
 - `cd /grace/path/to/garbage_out/monomer_garbage_out`
 - `cp **/*unrelaxed_rank_001*.pdb ../monomer_all_pdb`
+then in another terminal:
+- `scp -r /grace/path/to/garbage_out/monomer_garbage_out/monomer_all_pdb /path/to/local/Explainable-AlphaFold-Multimer/garbage_out/monomer_garbage_out/monomer_all_pdb
 
 For multimer PDB files:
 - `cd /grace/path/to/garbage_out/multimer_garbage_out`
 - `cp **/*unrelaxed_rank_001*.pdb ../multimer_all_pdb`
+then in another terminal:
+- `scp -r /grace/path/to/garbage_out/multimer_garbage_out/multimer_all_pdb /path/to/local/Explainable-AlphaFold-Multimer/garbage_out/multimer_garbage_out/multimer_all_pdb
 
 For antibody/antigen monomer PDB files:
 - `cd /grace/path/to/garbage_out/AA_monomer_garbage_out`
 - `cp **/*unrelaxed_rank_001*.pdb ../AA_monomer_all_pdb`
+then in another terminal:
+- `scp -r /grace/path/to/garbage_out/AA_monomer_garbage_out/AA_monomer_all_pdb /path/to/local/Explainable-AlphaFold-Multimer/garbage_out/AA_monomer_garbage_out/AA_monomer_all_pdb
 
 For antibody-antigen multimer PDB files:
 - `cd /grace/path/to/garbage_out/AA_multimer_garbage_out`
 - `cp **/*unrelaxed_rank_001*.pdb ../AA_multimer_all_pdb`
+then in another terminal:
+- `scp -r /grace/path/to/garbage_out/AA_multimer_garbage_out/AA_multimer_all_pdb /path/to/local/Explainable-AlphaFold-Multimer/garbage_out/AA_multimer_garbage_out/AA_multimer_all_pdb
 
 ## Copying ID csv files for monomers
 We also use the AlphaFold job ID for monomers later in data processing, so we need these files as well. Execute the following commands:
