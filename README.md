@@ -47,7 +47,7 @@ For monomer PDB files:
   
 then in another terminal:
 
-- `scp -r /grace/path/to/garbage_out/monomer_garbage_out/monomer_all_pdb /path/to/local/Explainable-AlphaFold-Multimer/garbage_out/monomer_garbage_out/monomer_all_pdb`
+- `scp -r /grace/path/to/garbage_out/monomer_garbage_out/monomer_all_pdb /path/to/local/Explainable-AlphaFold-Multimer/garbage_out/monomer_garbage_out`
 
 For multimer PDB files:
 - `cd /grace/path/to/garbage_out/multimer_garbage_out`
@@ -55,7 +55,7 @@ For multimer PDB files:
   
 then in another terminal:
 
-- `scp -r /grace/path/to/garbage_out/multimer_garbage_out/multimer_all_pdb /path/to/local/Explainable-AlphaFold-Multimer/garbage_out/multimer_garbage_out/multimer_all_pdb`
+- `scp -r /grace/path/to/garbage_out/multimer_garbage_out/multimer_all_pdb /path/to/local/Explainable-AlphaFold-Multimer/garbage_out/multimer_garbage_out`
 
 For antibody/antigen monomer PDB files:
 - `cd /grace/path/to/garbage_out/AA_monomer_garbage_out`
@@ -63,7 +63,7 @@ For antibody/antigen monomer PDB files:
   
 then in another terminal:
 
-- `scp -r /grace/path/to/garbage_out/AA_monomer_garbage_out/AA_monomer_all_pdb /path/to/local/Explainable-AlphaFold-Multimer/garbage_out/AA_monomer_garbage_out/AA_monomer_all_pdb`
+- `scp -r /grace/path/to/garbage_out/AA_monomer_garbage_out/AA_monomer_all_pdb /path/to/local/Explainable-AlphaFold-Multimer/garbage_out/AA_monomer_garbage_out`
 
 For antibody-antigen multimer PDB files:
 - `cd /grace/path/to/garbage_out/AA_multimer_garbage_out`
@@ -71,7 +71,7 @@ For antibody-antigen multimer PDB files:
   
 then in another terminal:
 
-- `scp -r /grace/path/to/garbage_out/AA_multimer_garbage_out/AA_multimer_all_pdb /path/to/local/Explainable-AlphaFold-Multimer/garbage_out/AA_multimer_garbage_out/AA_multimer_all_pdb`
+- `scp -r /grace/path/to/garbage_out/AA_multimer_garbage_out/AA_multimer_all_pdb /path/to/local/Explainable-AlphaFold-Multimer/garbage_out/AA_multimer_garbage_out`
 
 ## Copying ID csv files for monomers
 We also use the AlphaFold job ID for monomers later in data processing, so we need these files as well. Execute the following commands:
@@ -80,8 +80,19 @@ For generic monomer csv files:
 - `cd /grace/path/to/garbage_out/monomer_garbage_out`
 - `cp **/*.csv ../monomer_all_csv`
 
+then in another terminal:
+
+- `scp -r /grace/path/to/garbage_out/monomer_garbage_out/monomer_all_csv /path/to/local/Explainable-AlphaFold-Multimer/garbage_out/monomer_garbage_out`
+
 For antibody/antigen monomer csv files:
 - `cd /grace/path/to/garbage_out/AA_monomer_garbage_out`
 - `cp **/*.csv ../AA_monomer_all_csv`
+
+then in another terminal:
+
+- `scp -r /grace/path/to/garbage_out/monomer_garbage_out/AA_monomer_all_csv /path/to/local/Explainable-AlphaFold-Multimer/garbage_out/AA_monomer_garbage_out`
+
+
+
 
 Mirdita, M., Schütze, K., Moriwaki, Y. et al. ColabFold: making protein folding accessible to all. Nat Methods 19, 679–682 (2022). https://doi.org/10.1038/s41592-022-01488-1
