@@ -7,7 +7,7 @@ Repository supplementing the CPSC 471 final project on the explainability of Alp
 Copy the entire file structure on Github to your local computer.
 
 ## Generating configuration files:
-Run the notebooks `make_config_files.ipynb` and `AA_make_config_files.ipynb` in Explainable-AlphaFold-Multimer/data_processing. This will generate configuration files in Explainable-AlphaFold-Multimer/config_files which will be used to run AlphaFold and AlphaFold-Multimer on Grace.
+Run the notebooks `create_configs.ipynb` and `create_AA_configs.ipynb` in Explainable-AlphaFold-Multimer/data_processing. This will generate configuration files in Explainable-AlphaFold-Multimer/config_files which will be used to run AlphaFold and AlphaFold-Multimer on Grace.
 
 ## Set up directories on Grace as follows:
 The following directories and their subdirectories must be copied from Github to Grace prior to running any code on the cluster:
