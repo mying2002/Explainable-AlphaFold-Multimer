@@ -17,7 +17,7 @@ The following directories and their subdirectories must be copied from Github to
 - Explainable-AlphaFold-Multimer/config_files
 - Explainable-AlphaFold-Multimer/slurm_scripts
 
-# Running AlphaFold and AlphaFold-Multimer on Grace
+## Running AlphaFold and AlphaFold-Multimer on Grace
 Once the file structure has been set up, follow these two steps to run AlphaFold and AlphaFold-Multimer on Grace:
 1. Install the weights for AlphaFold by running the script `download_params.sh`. This can be done from the command line with `sbatch download_params.sh` while in the directory Explainable-AlphaFold-Multimer/slurm_scripts.
 2. Once the parameters have been downloaded, you may execute the following commands while in Explainable-AlphaFold-Multimer/slurm_scripts:
@@ -26,6 +26,13 @@ Once the file structure has been set up, follow these two steps to run AlphaFold
 - `sbatch run_AA_monomer_perturb.sh` (to run AlphaFold on the selected antibody/antigen mononumeric sequences)
 - `sbatch run_AA_multimer_perturb.sh` (to run AlphaFold-Multimer on the selected antibody-antigen multinumeric sequences)
 Since each of these scripts may submit several thousand processes on the cluster to run in parallel, we recommend running the scripts separately, waiting for all jobs submitted via one script to finish before sbatching the next one.
+
+## Copying outputs to local directory
+Copy the outputs from running AlphaFold and AlphaFold-Multimer on the cluster to your local computer with:
+`scp /grace/path/to/deletion_perturb_out/monomer_output.csv /path/to/local/Explainable-AlphaFold-Multimer/deletion_perturb_out/monomer_output.csv`
+`scp /grace/path/to/deletion_perturb_out/multimer_output.csv /path/to/local/Explainable-AlphaFold-Multimer/deletion_perturb_out/multimer_output.csv`
+`scp /path/to/deletion_perturb_out/AA_monomer_output.csv /path/to/local/Explainable-AlphaFold-Multimer/deletion_perturb_out/AA_monomer_output.csv`
+`scp /path/to/deletion_perturb_out/AA_multimer_output.csv /path/to/local/Explainable-AlphaFold-Multimer/deletion_perturb_out/AA_multimer_output.csv`
 
 
 
